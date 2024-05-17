@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +32,16 @@ public class ExpenseService {
         return expenseDTO;
     }
 
+    // DTO => Entity
+    private Expense mapToEntity(ExpenseDTO expenseDTO) throws ParseException {
+        Expense expense = modelMapper.map(expenseDTO, Expense.class);
+        // expenseId 유니크 문자열 입력 (자바 유틸 UUID 사용)
+        expense.setExpenseId(UUID.randomUUID().toString());
+        // 문자열 날짜 => 날짜
+        expense.setDate(DateTimeUtil.convertStringToDate(expenseDTO.getDateString()));
+        return expense;
+    }
+
     // 모든 비용 DTO 리스트를 가져오는 서비스
     public List<ExpenseDTO> getAllExpenses() {
         List<Expense> list = expRepo.findAll(); // Entity 리스트
@@ -37,5 +49,14 @@ public class ExpenseService {
                 .map((expense) -> mapToDTO(expense))
                 .collect(Collectors.toList());
         return listDTO;
+    }
+
+    public ExpenseDTO saveExpense(ExpenseDTO expenseDTO) throws ParseException {
+        // 1. DTO => Entity
+        Expense expense = mapToEntity(expenseDTO);
+        // 2. DB 에 저장
+        expense = expRepo.save(expense);
+        // 3. Entity => DTO
+        return mapToDTO(expense);
     }
 }
