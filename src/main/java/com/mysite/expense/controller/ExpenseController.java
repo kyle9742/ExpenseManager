@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,8 +36,9 @@ public class ExpenseController {
     }
 
     @PostMapping("/saveOrUpdateExpense")
-    public String saveOrUpdateExpense(@ModelAttribute("expense") ExpenseDTO expenseDTO) {
+    public String saveOrUpdateExpense(@ModelAttribute("expense") ExpenseDTO expenseDTO) throws ParseException {
         System.out.println("입력한 expenseDTO = " + expenseDTO);
+        expService.saveExpense(expenseDTO);
         return "redirect:/expenses";
     }
 }

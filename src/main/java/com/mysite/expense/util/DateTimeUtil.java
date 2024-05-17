@@ -13,7 +13,7 @@ public class DateTimeUtil {
     
     // 문자열 날짜 => sql 날짜
     public static Date convertStringToDate(String dateString) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date utilDate = sdf.parse(dateString);
         return new Date(utilDate.getTime());
     }
