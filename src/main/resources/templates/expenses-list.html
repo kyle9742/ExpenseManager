@@ -8,6 +8,7 @@
 <body>
 <h1>비용 리스트</h1>
 <hr />
+<h2>당신이 사용한 비용은 총 <span th:text="|${#numbers.formatCurrency(total)}|"></span>원 입니다.</h2>
 <form th:action="@{/filterExpenses}" method="get" th:object="${filter}">
   키워드 검색 : <input type="text" th:field="*{keyword}" placeholder="키워드 입력">
   <select th:field="*{sortBy}">

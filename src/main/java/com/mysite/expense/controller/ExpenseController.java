@@ -28,6 +28,8 @@ public class ExpenseController {
     public String showExpenseList(Model model) {
         model.addAttribute("expenses", expService.getAllExpenses());
         model.addAttribute("filter", new ExpenseFilterDTO());
+        Long total = expService.totalExpenses(expService.getAllExpenses());
+        model.addAttribute("total", total);
         return "expenses-list";
     }
 

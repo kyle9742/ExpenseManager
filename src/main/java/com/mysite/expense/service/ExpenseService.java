@@ -94,4 +94,10 @@ public class ExpenseService {
         return filterlist;
     }
 
+    public Long totalExpenses(List<ExpenseDTO> list) {
+        Long sum = list.stream()
+                .map(x -> x.getAmount())
+                .reduce(0L, Long::sum);
+        return sum;
+    }
 }

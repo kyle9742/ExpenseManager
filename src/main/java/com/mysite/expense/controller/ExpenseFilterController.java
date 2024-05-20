@@ -23,6 +23,8 @@ public class ExpenseFilterController {
         System.out.println(expenseFilterDTO);
         List<ExpenseDTO> list = expService.getFilterExpenses(expenseFilterDTO.getKeyword(), expenseFilterDTO.getSortBy());
         model.addAttribute("expenses", list);
+        Long total = expService.totalExpenses(list);
+        model.addAttribute("total", total);
         return "expenses-list";
     }
 }
