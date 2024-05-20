@@ -12,7 +12,7 @@ public class ExpenseApplication {
         SpringApplication.run(ExpenseApplication.class, args);
     }
 
-    // 사용할 모델매퍼 객체를 빈 등록
+    //사용할 모델매퍼 객체를 빈 등록
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
