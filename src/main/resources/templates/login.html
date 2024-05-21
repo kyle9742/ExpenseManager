@@ -13,7 +13,7 @@
     <p>가입해주셔서 감사합니다. 이제 당신의 비용관리를 시작하세요!</p>
 </div>
 <div>
-    <form id="loginForm">
+    <form th:action="@{/login}" method="post" id="loginForm">
         <input type="text" name="email" placeholder="이메일 입력">
         <br><br>
         <input type="text" name="password" placeholder="패스워드 입력">
