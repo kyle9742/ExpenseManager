@@ -38,6 +38,14 @@ public class CustomSecurityConfig {
                         .passwordParameter("password")
                         // 인증시 로그인 페이지를 지정하고 실패시 주소 지정 성공주소 지정 (username => email, password)
                 )
+                .logout((logout) -> logout
+                                .logoutUrl("/logout")
+                                .invalidateHttpSession(true)
+                                .clearAuthentication(true)
+                                .logoutSuccessUrl("/login?logout=true")
+                                .permitAll()
+                )
+
         ;
 
         return http.build();
