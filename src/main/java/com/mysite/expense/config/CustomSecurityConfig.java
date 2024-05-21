@@ -32,7 +32,7 @@ public class CustomSecurityConfig {
                 ) // 리퀘스트매처의 주소들은 허가하고 그 외의 주소는 인증을 요구함
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .failureUrl("/")
+                        .failureUrl("/login?error=true")
                         .defaultSuccessUrl("/expenses")
                         .usernameParameter("email")
                         .passwordParameter("password")
