@@ -23,4 +23,9 @@ public class Expense {
     private String description; //설명
     private long amount;        //비용
     private Date date;          //날짜
+    // 유저를 참조하는 열을 추가
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
 }

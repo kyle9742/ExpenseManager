@@ -21,6 +21,7 @@ public class ExpenseService {
 
     private final ExpenseRepository expRepo;
     private final ModelMapper modelMapper;
+    private final UserService userService;
 
     //엔티티 => DTO 변환 (다른 메서드에서만 사용 변환용)
     private ExpenseDTO mapToDTO(Expense expense) {
@@ -53,6 +54,7 @@ public class ExpenseService {
     public ExpenseDTO saveExpense(ExpenseDTO expenseDTO) throws ParseException {
         //1. DTO => Entity
         Expense expense = mapToEntity(expenseDTO);
+        expense.setUser(userService.getLoggedInUser());
         //2. DB에 저장 (id 있을경우에는 업데이트)
         expense = expRepo.save(expense);
         //3. Entity => DTO
