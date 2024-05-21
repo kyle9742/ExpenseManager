@@ -3,6 +3,8 @@ package com.mysite.expense.service;
 import com.mysite.expense.dto.ExpenseDTO;
 import com.mysite.expense.dto.ExpenseFilterDTO;
 import com.mysite.expense.entity.Expense;
+import com.mysite.expense.entity.User;
+import com.mysite.expense.exception.ExpenseNotFoundException;
 import com.mysite.expense.repository.ExpenseRepository;
 import com.mysite.expense.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +46,8 @@ public class ExpenseService {
 
     //모든 비용 DTO 리스트를 가져오는 서비스
     public List<ExpenseDTO> getAllExpenses() {
-        List<Expense> list = expRepo.findAll(); //엔티티 리스트
+        User user = userService.getLoggedInUser(); // 로그인 유저를 가져옴
+        List<Expense> list = expRepo.findByUserId(user.getId()); // 유저의 비용만 가져오기
         List<ExpenseDTO> listDTO = list.stream()
                 .map((expense) -> mapToDTO(expense))
                 .collect(Collectors.toList());
@@ -70,7 +73,7 @@ public class ExpenseService {
     //리팩토링
     private Expense getExpenseById(String expenseId) {
         return expRepo.findByExpenseId(expenseId)
-                .orElseThrow(() -> new RuntimeException("해당 ID의 아이템을 찾을수 없습니다."));
+                .orElseThrow(() -> new ExpenseNotFoundException("해당 ID의 아이템을 찾을수 없습니다." + expenseId));
     }
 
     //expenseId로 수정할 expense를 찾아 DTO 로 리턴
@@ -92,7 +95,8 @@ public class ExpenseService {
         Date startDay = !startString.isEmpty() ? DateTimeUtil.convertStringToDate(startString) : new Date(0);
         Date endDay = !endString.isEmpty() ? DateTimeUtil.convertStringToDate(endString) : new Date(System.currentTimeMillis());
 
-        List<Expense> list = expRepo.findByNameContainingAndDateBetween(keyword, startDay, endDay);
+        User user = userService.getLoggedInUser();
+        List<Expense> list = expRepo.findByNameContainingAndDateBetweenAndUserId(keyword, startDay, endDay, user.getId());
         List<ExpenseDTO> filterlist = list.stream()
                 .map((exp) -> mapToDTO(exp))
                 .collect(Collectors.toList());

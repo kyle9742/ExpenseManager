@@ -10,7 +10,10 @@ import java.util.Optional;
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     Optional<Expense> findByExpenseId(String expenseId);
-    //검색메소드 WHERE name LIKE %keyword%
 
-    List<Expense> findByNameContainingAndDateBetween(String keyword, Date start, Date end);
+    //검색메소드 WHERE name LIKE %keyword% AND date = 시작일 between date = 종료일 AND user_od = ?
+    List<Expense> findByNameContainingAndDateBetweenAndUserId(String keyword, Date start, Date end, Long id);
+
+    // 로그인 유저의 비용만 검색 select * from tbl_expenses where user_id = ?
+    List<Expense> findByUserId(Long id);
 }
