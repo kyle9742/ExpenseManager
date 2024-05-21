@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -47,7 +48,12 @@ public class ExpenseService {
     //모든 비용 DTO 리스트를 가져오는 서비스
     public List<ExpenseDTO> getAllExpenses() {
         User user = userService.getLoggedInUser(); // 로그인 유저를 가져옴
-        List<Expense> list = expRepo.findByUserId(user.getId()); // 유저의 비용만 가져오기
+        List<Expense> list = expRepo.findByDateBetweenAndUserId(
+                Date.valueOf(LocalDate.now().withDayOfMonth(1)),
+                Date.valueOf(LocalDate.now()),
+                user.getId()
+        ); // 유저의 비용만 가져오기
+
         List<ExpenseDTO> listDTO = list.stream()
                 .map((expense) -> mapToDTO(expense))
                 .collect(Collectors.toList());

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
@@ -19,8 +21,11 @@ public class AuthController {
     private final UserService uService;
 
     @GetMapping({"/login", "/"})
-    public String showLoginPage() {
-        return "login";
+    public String showLoginPage(Principal principal) {
+        if (principal == null) {
+            return "login";
+        }
+        return "redirect:/expenses";
     }
 
     @GetMapping("/register")
@@ -40,6 +45,6 @@ public class AuthController {
         }
         uService.save(user);
         model.addAttribute("successMsg", true);
-        return "login";
+        return "response";
     }
 }
